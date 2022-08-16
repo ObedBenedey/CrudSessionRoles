@@ -1,0 +1,28 @@
+﻿@page "/"
+@using DocumentFormat.OpenXml.InkML
+@using Microsoft.AspNetCore.Components.Forms
+@using PAPELERIANGELESC.Models
+@using Microsoft.AspNetCore.Mvc.Razor;
+
+
+
+</EditForm>
+<table class="table">
+    <tr>
+        <td>Email:</td>
+        <td><input type="text" @bind="mail.Email"/></td>
+    </tr>
+    <tr>
+        <td>Subjet:</td>
+        <td><input type="text" @bind="mail.Subjet"/></td>
+    </tr>
+    <tr>
+        <td>body:</td>
+        <td><input type="text" @bind="mail.Body"/></td>
+    </tr>
+</table>
+
+@code 
+{
+
+}

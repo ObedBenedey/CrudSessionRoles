@@ -1,0 +1,33 @@
+﻿@model SolicitudModel
+@{
+    ViewData["Title"] = "EliminarSol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+    <div class="card-header">
+        ¿Seguro de autorizar esta solicitud?
+    </div>
+    <div class="card-body">
+        <form asp-action="EditarEstatus" asp-controller="MantenedorSol" method="post">
+            <input asp-for="IdSolicitud" type="hidden" readonly class="form-control">
+            <input asp-for="EstatuSol"  type="hidden" readonly id="EstatuSol"  class="form-control">
+
+            <div class="alert alert-danger" role="alert">
+               La solicitud que sera autorizada es la : @Html.DisplayTextFor(m => m.IdSolicitud) 
+            </div>
+            <button type="submit" class="btn btn-success">Cambiar</button>
+            <a asp-action="ListarSol" asp-controller="MantenedorSol" class="btn btn-warning">Volver a la lista</a>
+        </form>
+    </div>
+</div>
+@section Scripts
+    {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+          let params = new URLSearchParams(location.search);
+           var contract = params.get('EstatuSol');
+             $('#EstatuSol').attr('value',contract );
+    </script>
+    }

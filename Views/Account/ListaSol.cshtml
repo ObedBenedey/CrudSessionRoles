@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "listarSol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h3> @ViewBag.NumeroEmpleado</h3>
+<div class="card">
+    <div class="card-header">
+        Lista de Solicitudes
+    </div>
+    <div class="card-body">
+        <a asp-action="guardarSol" asp-controller="MantenedorSol" class="btn btn-success"><i class="bi-info bi-plus-circle"></i>  Crear una Solicitud</a>
+        <hr />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+
+                    <th>Estatus</th>
+                    <th>Crear o Visualizar</th>
+           
+                    <th>Eliminar</th>
+                    <th>Autorizar</th>
+                    <th>Exportar Excel</th>
+                    <th>Aprovar</th>
+        
+
+
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdSolicitud</td>
+                        
+                        <td> @item.NombreE</td>
+                        
+                        
+                         @if (@item.EstatuSol != 5)
+                         {
+                        <td>
+                            <a asp-action="Guardar" asp-controller="Mantenedor" title="Crear Requisicíon" class="btn btn-success btn-sm" asp-route-IdSolicitudF="@item.IdSolicitud"><i class="bi-info bi-plus-circle"></i></a>
+                            <a asp-action="listar" asp-controller="Mantenedor" title="ver Requisicíon" class="btn btn-primary btn-sm" asp-route-IdSolicitudF="@item.IdSolicitud"><i class="bi bi-eye"></i></a>
+                        </td>
+                        }@if(@item.EstatuSol == 5)
+                        {
+                        <td></td>
+                        }
+                        <td>
+                              <a data-toggle="tooltip" data-placement="top" title="Eliminar" asp-action="EliminarSol" asp-controller="MantenedorSol" class="btn btn-danger btn-sm" asp-route-IdSolicitud="@item.IdSolicitud"><i class="bi bi-trash3"></i></a>
+                        </td>
+                        @if (@item.EstatuSol == 2)
+                        {
+                            <td>
+                                <a data-toggle="tooltip" data-placement="top" title="Autorizar" asp-action="EditarEstatus" asp-controller="MantenedorSol" class="btn btn-outline-success btn-sm" asp-route-EstatuSol="3" asp-route-IdSolicitud="@item.IdSolicitud"><i class="bi bi-check2"></i></a>                                               
+                            </td>
+                        }
+                        <td></td>
+                        @if (@item.EstatuSol == 3)
+                        {
+                            <td>
+                                <a data-toggle="tooltip" data-placement="top" title="excel" asp-action="Exportar_Excel" asp-controller="Home" class="btn btn-outline-success btn-sm" asp-route-IdSolicitud="@item.IdSolicitud"><i class="bi bi-file-earmark-excel"></i></a> 
+                        </td>
+                        }
+                        <td></td>
+                        @if (@item.EstatuSol == 1)
+                        {
+                            <td>
+                                <a data-toggle="tooltip" data-placement="top" title="Aprovar" asp-action="EditarEstatus" asp-controller="MantenedorSol" class="btn btn-outline-success btn-sm" asp-route-EstatuSol="2" asp-route-IdSolicitud="@item.IdSolicitud"><i class="bi bi-card-checklist"></i></a>                                               
+                            </td>
+                        }
+                        
+
+     
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

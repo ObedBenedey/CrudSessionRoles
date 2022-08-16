@@ -1,0 +1,266 @@
+﻿@model ReqModel
+
+@{
+    ViewData["Title"] = "Guardar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            Crear Contacto
+        </div>
+        <div class="card-body">
+            <form asp-action="Guardar" asp-controller="Mantenedor" method="post">
+                <div class="row">
+                    <input id="IdSolicitudF" asp-for="IdSolicitudF" type="hidden" class="form-control" readonly>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Posicion  solicitud de pedido </label>
+                            <input asp-for="BNFPO" type="number" class="form-control">
+                            <span asp-validation-for="BNFPO" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <input asp-for="IdSolicitante" value="@ViewBag.NumeroEmpleado" readonly type="hidden" class="form-control">
+
+                        <div class="mb-3">
+                            <label class="form-label">Clase de documento</label>
+                            <select asp-for="BSART" class="form-select" aria-label="Default select example">
+                                <option selected>Clase de documento</option>
+                                <option value="ZNBP">HAC Sol Act No Almacen</option>
+                                <option value="ZNBP">HAC Sol Act No Alma Pape</option>
+                                <option value="ZNBP">HAC Sol Act Fijos</option>
+                            </select>
+                            <span asp-validation-for="BSART" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Usuario de compras</label>
+                            <select asp-for="EKGRP" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona el usuario de compras</option>
+                                <option value="100">Jose Angel Chavez</option>
+                                <option value="101">Yedith Gómez</option>
+                                <option value="102">Teresa Vega</option>
+                                <option value="103">Leticia Martinez</option>
+                                <option value="104">Mantenimiento</option>
+                                <option value="105">Recursos Humanos 1</option>
+                                <option value="106">Recursos Humanos 2</option>
+                                <option value="107">Sistemas</option>
+                                <option value="108">Relaciones pública</option>
+                                <option value="109">Mercadotecnía</option>
+                                <option value="110">Laboratorio</option>
+                                <option value="111">Idania Batista</option>
+                                <option value="112">Contabilidad</option>
+                                <option value="113">Almacen</option>
+                                <option value="114">Biomedicos</option>
+                                <option value="115">Cuentas por Cobrar</option>
+                            </select>
+                            <span asp-validation-for="EKGRP" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Departamento</label>
+                            <select asp-for="Idepartamento" class="form-select" aria-label="Default select example">
+                                <option selected>Departamento Solicitante</option>
+                                <option value="10000000">Direccion General</option>
+                                <option value="10000002">Contabilidad</option>
+                                <option value="10000006">Informatica</option>
+                            </select>
+                            <span asp-validation-for="Idepartamento" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Tipo de Imputacion </label>
+                            <select asp-for="KNTTP" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona el tipo de imputacion</option>
+                                <option value="A">Activo fijo</option>
+                                <option value="B">FrabCntStStk/LiqKDAUF</option>
+                                <option value="C">Pedido de cliente</option>
+                                <option value="D">IndvqClte/LiqProy</option>
+                                <option value="E">IndvqClte c/Co PdClt</option>
+                                <option value="F">Orden</option>
+                                <option value="G">FrabCntStStk/LiqProyec</option>
+                                <option value="K">Centro de coste</option>
+                                <option value="M">IndvqClte s/Co PdClt</option>
+                                <option value="N">Grafo</option>
+                                <option value="P">Proyecto</option>
+                                <option value="Q">Frabric.indiv.proyec.</option>
+                                <option value="T">Todos Nuevos CostInd</option>
+                                <option value="U">Desconocido</option>
+                                <option value="X">Todas imput.auxil</option>
+                                <option value="Y">sol.Activo fijo CIMA</option>
+                            </select>
+                            <span asp-validation-for="KNTTP" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Grupo de articulos</label>
+                            <select asp-for="Idmaterial" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona le grupo de articulos</option>
+                                <option value="INS-011">Equipo de computo</option>
+                                <option value="INS-011">Electrico</option>
+                                <option value="INS-011">Telefonos IP</option>
+                            </select>
+                            <span asp-validation-for="Idmaterial" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="mb-3">
+                    <label class="form-label">Texto Breve</label>
+                    <div class="form-floating">
+                        <textarea asp-for="TXZ01" class="form-control" placeholder="Ingresa una breve descripción" style="height: 100px"></textarea>
+                        <label for="floatingTextarea2">Ingresa una descipción de lo requerido:</label>
+                    </div>
+                    <span asp-validation-for="TXZ01" class="text-danger"></span>
+                </div>
+                <div class="row">
+
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Cantidad</label>
+                            <input asp-for="MENGE" type="number" class="form-control">
+                            <span asp-validation-for="MENGE" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Cantidad Unitaria</label>
+                            <input asp-for="PEINH" type="number" class="form-control">
+                            <span asp-validation-for="PEINH" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Unidad de Medida</label>
+                            <select asp-for="MEINS_01" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona el tipo de medida</option>
+                                <option value="PZA">Pieza</option>
+                                <option value="ROL">Rollos</option>
+                                <option value="MH">Metro</option>
+                            </select>
+                            <span asp-validation-for="MEINS_01" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de Entrega</label>
+                            <input asp-for="EEIND" id="datepicker" type="text" class="form-control" value="@DateTime.Now.ToString("dd.MM.yyyy")" />
+                            <span asp-validation-for="EEIND" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <input readonly asp-for="BADAT" id="datepickerFS" type="hidden" class="form-control" value="@DateTime.Now.ToString("dd.MM.yyyy")" />
+                        <div class="mb-3">
+                            <label class="form-label">Fecha de Liberación</label>
+                            <input asp-for="FRGDT" id="datepickerFL" type="text" class="form-control" value="@DateTime.Now.ToString("dd.MM.yyyy")" />
+                            <span asp-validation-for="FRGDT" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-3">
+                            <label class="form-label">Tipo de entrega</label>
+                            <select asp-for="LPEIN" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona el tipo de medida</option>
+                                <option value="D">DAY FORMAT</option>
+                                <option value="T">FORMATO DIARIO</option>
+                                <option value="W">FORMATO SEMANAL</option>
+                                <option value="M">FORMATO MENSUAL</option>
+
+                            </select>
+                            <span asp-validation-for="LPEIN" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="mb-3">
+                            <label class="form-label">Centro</label>
+                            <select asp-for="WERKS_01" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona el CENTRO</option>
+                                <option value="1000">HOSPITAL ANGELES</option>
+                                <option value="1500">COC</option>
+                            </select>
+                            <span asp-validation-for="WERKS_01" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+
+                    <input asp-for="Estatus" value="1" type="hidden" class="form-control" readonly>
+                    <span asp-validation-for="Estatus" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Cuenta Mayor</label>
+                            <select asp-for="SAKTO" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona LA CUENTA MAYOR</option>
+                                <option value="72100190">GTS Art. Cómputo y comunicaciones </option>
+                                <option value="72100200">GTS Equipos Menores</option>
+                                <option value="72100210">GTS Renta de equipos no médicos </option>
+                                <option value="72100220">GTS papelería y art de Escritorio</option>
+
+                            </select>
+                            <span asp-validation-for="SAKTO" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Coste de Centro</label>
+                            <select asp-for="KOSTL" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona el CENTRO COSTE</option>
+                                <option value="10000006">INFORMATICA</option>
+                                <option value="10000008">MANTENIMIENTO</option>
+                                <option value="10109009">URGENCIAS</option>
+                            </select>
+                            <span asp-validation-for="KOSTL" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Valor Estimado</label>
+                            <input asp-for="PREIS" type="number" class="form-control">
+                            <span asp-validation-for="PREIS" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label">Unidad de Medida</label>
+                            <select asp-for="WAERS" class="form-select" aria-label="Default select example">
+                                <option selected>Selecciona el tipo de medida</option>
+                                <option value="MXN">MXN</option>
+                                <option value="USD">USD</option>
+                                <option value="EUR">EUR</option>
+                            </select>
+                            <span asp-validation-for="WAERS" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar</button>
+                <a asp-action="Listar" id="buttonList" asp-controller="Mantenedor" class="btn btn-warning">volver a la lista</a>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts
+    {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function() {
+                $("#datepicker").datepicker({ dateFormat: "dd.mm.yy" }).val()
+                $("#datepickerFL").datepicker({ dateFormat: "dd.mm.yy" }).val()
+        });
+        var x = $("#IdSolicitudF").val();
+                $('#buttonList').attr('href', '/Mantenedor/Listar?IdSolicitudF=' + x);
+    </script>
+}

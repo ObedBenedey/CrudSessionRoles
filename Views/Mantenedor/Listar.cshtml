@@ -1,0 +1,190 @@
+﻿@model List<ReqModel>
+@{
+    ViewData["Title"] = "Listar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    int contador = 1;
+    int i = 1;
+}
+@if (@ViewBag.role == 4)
+{
+    <h1>Compras</h1>
+}
+@if (@ViewBag.role == 3)
+{
+    <h1>Usuario</h1>
+}
+@if (@ViewBag.role == 2)
+{
+    <h1>Jefe de Departamento</h1>
+}
+<div class="card">
+    <div class="card-header">
+        Lista de Posiciones
+    </div>
+    <div class="card-body">
+        @if (ViewBag.role == 3)
+        {
+            <a asp-action="guardar" id="buttonList" asp-controller="Mantenedor" class="btn btn-success"><i class="bi-info bi-plus-circle"></i>  Crear una Posición</a>
+        }
+        <hr />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>
+                    </th>
+                    <th>Clase de documento</th>
+                    <th>Texto Breve</th>
+                    <th>Cantidad</th>
+                    <th>Unidad de Medida</th>
+                    <th>Fecha de Entrega</th>
+                    <th>Valor Estimado</th>
+                    <th>Acciones</th>
+                    @if (@ViewBag.role == 4)
+                    {
+                        <th>Email</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (@ViewBag.role == 4)
+                            {
+                                <div class="form-check form-check-inline">
+                                    @if (@item.CHEK == 1)
+                                    {
+                                        <input type="checkbox" value="" class="form-check-input" checked data-path="@item.IdReq" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" value="" class="form-check-input" data-path="@item.IdReq" />
+                                    }
+                                </div>
+                            }
+                        </td>
+                        <td>@item.BSART</td>
+                        <td>@item.TXZ01</td>
+                        <td>@item.MENGE</td>
+                        <td>@item.EEIND</td>
+                        <td>@item.SAKTO</td>
+                        <td>@item.PREIS</td>
+                        <td>
+                            @if (@item.Estatus == 1 || @item.Estatus == 4)
+                            {
+                                <a asp-action="Editar" asp-controller="Mantenedor" title="Editar" class="btn btn-primary btn-sm" asp-route-IdReq="@item.IdReq"><i class="bi bi-pencil-square"></i></a>
+                                <a data-toggle="tooltip" data-placement="top" title="Eliminar" asp-action="Eliminar" asp-controller="Mantenedor" asp-route-IdSolicitudF="@item.IdSolicitudF" class="btn btn-danger btn-sm" asp-route-IdReq="@item.IdReq"><i class="bi bi-trash3"></i></a>
+                            }
+                            <button type="button" class="btn btn-secondary btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg-@i"><i class="bi bi-eye"></i></button>
+
+                        </td>
+                        <td>
+                            @if (@ViewBag.role == 4)
+                            {
+                                <form asp-action="EmailProv" asp-controller="Mantenedor" asp-route-IdReq="@item.IdReq" method="post">
+
+                                    <select id="SelectDestinatario" onchange="slec(@contador)" name="Destinatario" class="form-select" aria-label="Default select example">
+                                        <option selected>Selecciona el proveedor</option>
+                                        <option value="obedrodriguezbenedey@hotmail.com">Obed Rodriguez</option>
+                                        <option value="2733@h.angeleschihuahua.com">Leticia Martinez</option>
+                                        <option value="orodriguez@angeleschihuahua.com">obed benedey</option>
+                                    </select>
+                                    <div id="div-@contador" hidden>
+
+                                        <button id="ButtonDestinatario" data-toggle="tooltip" type="submit" data-placement="top" title="Aprovar" class="btn btn-outline-success btn-sm"><i class="bi bi-send-check-fill"></i></button>
+                                    </div>
+                                </form>
+                            }
+                            <div class="modal fade bd-example-modal-lg-@i" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                @item.Idmaterial
+                                            </div>
+                                            <div class="card-body">
+                                                <blockquote class="blockquote mb-0">
+                                                    <p>Solicitante: @item.IdSolicitante</p>
+                                                    <p>Clase de documento: @item.BSART</p>
+                                                    <p>Texto breve de el pedido: @item.TXZ01</p>
+                                                    <p>Unidad: @item.MEINS_01</p>
+                                                    <p>Fecha de entrega: @item.EEIND</p>
+                                                    <p>Cantidad: @item.MENGE</p>
+                                                    <p>Valor estimado: @item.PREIS</p>
+                                                    <p>Tipo de cambió: @item.WAERS</p>
+                                                    <p>Departamento: @item.Idepartamento</p>
+                                                    <p>Tipo de Imputación: @item.KNTTP</p>
+                                                    <p>Tipo de Entrega: @item.LPEIN</p>
+                                                    <p>Centro: @item.WERKS_01</p>
+                                                </blockquote>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    contador = contador + 1;
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    function slec(contador) {
+        $('#div-' + contador).removeAttr('hidden');
+    }
+    let params = new URLSearchParams(location.search);
+    var contract = params.get('IdSolicitudF');
+    $('#buttonList').attr('href', '/Mantenedor/Guardar?IdSolicitudF=' + contract);
+    var EmailView = params.get('EmailView');
+    if (EmailView) {
+        $('#div-' + contador).hide(2000);
+        $('#SelectDestinatario').hide(2000);
+    } else {
+    }
+    $('#exampleModalCenter').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
+</script>
+@section Scripts
+    {
+    <script>
+        $(document).ready(function() {
+
+            $('.form-check-input').click(function(e) {
+                console.log($(e.target).data('path'))   //result: "aaa"
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("ChangeCheck")',
+                    data: JSON.stringify($(e.target).data('path')), //change here....
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function(response) {
+                    },
+                    error: function() {
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,30 @@
+﻿@model SolicitudModel
+@{
+    ViewData["Title"] = "GuardarSol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="card">
+  <div class="card-header">
+    Crear Solicitud
+  </div>
+  <div class="card-body">
+      <form asp-action="GuardarSol" asp-controller="MantenedorSol" method="post">
+      <div class="mb-3">
+        <input  type="hidden" asp-for="EstatuSol" value="1" readonly type="number" class="form-control" >
+        <span asp-validation-for="EstatuSol" class="text-danger"></span>
+      </div>
+        <input  type="hidden" asp-for="IdRelReq" value="@ViewBag.NumeroEmpleado" readonly type="number" class="form-control" >
+        <input  type="hidden" asp-for="IdRelSolDepartamento" value="" readonly type="number" class="form-control" >
+      <button id="boton" type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+  </div>
+</div>
+@section Scripts
+    {
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $("#boton").trigger("click");
+    </script>
+}

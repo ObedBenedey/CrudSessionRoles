@@ -1,0 +1,300 @@
+﻿@{
+    ViewData["Title"] = "listarSol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 1;
+}
+
+@if (@ViewBag.role == 4)
+{
+    <h1>Compras</h1>
+}
+@if (@ViewBag.role == 3)
+{
+    <h1>Usuario</h1>
+}
+@if (@ViewBag.role == 2)
+{
+    <h1>Jefe de Departamento</h1>
+}
+<div class="card">
+    <div class="card-header">
+        Lista de Solicitudes
+    </div>
+    <div class="card-body">
+        @if (@ViewBag.role != 4)
+        {
+            <a asp-action="guardarSol" asp-controller="MantenedorSol" class="btn btn-success"><i class="bi-info bi-plus-circle"></i>  Crear una Solicitud</a>
+        }
+        <hr />
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    @if (@ViewBag.role != 3)
+                    {
+                        <th>Usuario</th>
+                    }
+                    <th>Estatus</th>
+                    <th>Crear o Visualizar</th>
+                    @if (@ViewBag.role != 4)
+                    {
+                        <th>Eliminar</th>
+                    }
+                    @if (@ViewBag.role == 2)
+                    {
+                        <th>Autorizar</th>
+                    }
+                    @if (@ViewBag.role == 4)
+                    {
+                        <th>Exportar Excel</th>
+                    }
+                    @if (@ViewBag.role == 3)
+                    {
+                        <th>Aprovar</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.IdSolicitud</td>
+                        @if (@ViewBag.role != 3)
+                        {
+                            <td>@item.IdRelReq</td>
+                        }
+                        <td> @item.NombreE</td>
+                        @if (@item.EstatuSol != 5)
+                        {
+                            <td>
+                                @if (@ViewBag.role != 2 && @ViewBag.role != 4)
+                                {
+                                    <a asp-action="Guardar" asp-controller="Mantenedor" title="Crear Requisicíon" class="btn btn-success btn-sm" asp-route-IdSolicitudF="@item.IdSolicitud"><i class="bi-info bi-plus-circle"></i></a>
+                                }
+                                <a asp-action="listar" asp-controller="Mantenedor" title="ver Requisicíon" class="btn btn-primary btn-sm" asp-route-IdSolicitudF="@item.IdSolicitud"><i class="bi bi-eye"></i></a>
+                            </td>
+                        }@if (@item.EstatuSol == 5)
+                        {
+                            <td> <a asp-action="listar" asp-controller="Mantenedor" title="ver Requisicíon" class="btn btn-primary btn-sm" asp-route-IdSolicitudF="@item.IdSolicitud"><i class="bi bi-eye"></i></a></td>
+                        }
+                        @if (@ViewBag.role != 4)
+                        {
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal-lg-@i"><i class="bi bi-trash3"></i></button>
+
+                            </td>
+                        }
+                        <div class="modal fade bd-example-modal-lg-@i" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="card">
+                                        <div class="card-header">
+                                        </div>
+                                        <div class="card-body">
+                                            <blockquote class="blockquote mb-0">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        Elimnar Solicitud
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <div class="alert alert-danger" role="alert">
+                                                            ¿Desea eliminar la Solicitud:  @item.IdSolicitud?
+                                                        </div>
+                                                        <button type="button" class="btn btn-danger deleted" id="form-check-input" data-path="@item.IdSolicitud">Elimnar</button>
+                                                    </div>
+                                                </div>
+                                            </blockquote>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (@item.EstatuSol == 2)
+                        {
+                            @if (@ViewBag.role == 2)
+                            {
+                                <td>
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target=".bd-aprovar-modal-lg-@i"><i class="bi bi-card-checklist"></i></button>
+                                </td>
+                                <div class="modal fade bd-aprovar-modal-lg-@i" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                </div>
+                                                <div class="card-body">
+                                                    <blockquote class="blockquote mb-0">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                Autorizar Solicitud
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="alert alert-success" role="alert">
+                                                                    ¿Desea autorizar la Solicitud:  @item.IdSolicitud?
+                                                                </div>
+                                                                <button type="button" class="btn btn-success Approve" id="form-check-input" data-path="@item.IdSolicitud,3">Aprovar</button>
+                                                                <button type="button" class="btn btn-secondary" onclick="myFunction()" id="form-check-input">Negar</button>
+                                                                <div class="form-group remove" style="display: none">
+                                                                    <form asp-action="GuardarMotivo" asp-controller="MantenedorSol" method="post">
+                                                                        <label for="exampleFormControlTextarea1">Explica el motivo</label>
+                                                                        <input name="Idsolicitud" type="hidden" value="@item.IdSolicitud">
+                                                                        <textarea class="form-control" id="exampleFormControlTextarea1 textArea" name="Comment" rows="3"></textarea>
+                                                                        <br>
+                                                                        <button type="submit" class="btn btn-secondary" id="form-check-input">Enviar</button>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        @if (@item.EstatuSol == 3)
+                        {
+                            @if (@ViewBag.role == 4)
+                            {
+                                <td>
+                                    <a data-toggle="tooltip" data-placement="top" title="excel" asp-action="Exportar_Excel" asp-controller="Home" class="btn btn-outline-success btn-sm" asp-route-IdSolicitud="@item.IdSolicitud"><i class="bi bi-file-earmark-excel"></i></a>
+                                </td>
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                        @if (@item.EstatuSol == 1 || @item.EstatuSol == 4)
+                        {
+                            @if (@ViewBag.role == 3)
+                            {
+                                <td>
+                                    <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target=".bd-aprovar-modal-lg-@i"><i class="bi bi-card-checklist"></i></button>
+                                    @if (@item.EstatuSol == 4)
+                                    {
+                                        <button type="button" class="btn btn-outline-success btn-sm" data-toggle="modal" data-target=".bd-admira-modal-lg-@i"><i class="bi bi-exclamation-diamond-fill"></i></button>
+                                        <div class="modal fade bd-admira-modal-lg-@i" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg">
+                                                <div class="modal-content">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <blockquote class="blockquote mb-0">
+                                                                <div class="card">
+                                                                    <div class="card-header">
+                                                                        No se aprobó por el siguiente motivo:
+                                                                    </div>
+                                                                    <div class="card-body">
+                                                                        <p>@item.Comment</p>
+                                                                    </div>
+                                                                </div>
+                                                            </blockquote>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </td>
+                                <div class="modal fade bd-aprovar-modal-lg-@i" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                </div>
+                                                <div class="card-body">
+                                                    <blockquote class="blockquote mb-0">
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                Aprovar Solicitud
+                                                            </div>
+                                                            <div class="card-body">
+                                                                <div class="alert alert-success" role="alert">
+                                                                    ¿Desea aprovar la Solicitud:  @item.IdSolicitud?
+                                                                </div>
+                                                                <button type="button" class="btn btn-success Approve" id="form-check-input" data-path="@item.IdSolicitud,2">Aprovar</button>
+                                                            </div>
+                                                        </div>
+                                                    </blockquote>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+
+                            }
+                        }
+                    </tr>
+                    i++;
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    $('#exampleModalCenter').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
+    function myFunction() {
+        $(".remove").toggle();
+    }
+</script>
+@section Scripts
+    {
+    <script>
+        $(document).ready(function() {
+
+            $('.deleted').click(function(e) {
+                console.log($(e.target).data('path'))   //result: "aaa"
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EliminarSol")',
+                    data: JSON.stringify($(e.target).data('path')), //change here....
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function(response) {
+
+                        window.location.reload();
+                    },
+                    error: function() {
+
+                        window.location.reload();
+                    }
+                });
+            });
+
+            $('.Approve').click(function(e) {
+                console.log($(e.target).data('path'));
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("EditarEstatusAjax")',
+                    data: JSON.stringify($(e.target).data('path')), //change here....
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function(response) {
+                        window.location.reload();
+                    },
+                    error: function() {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+}
